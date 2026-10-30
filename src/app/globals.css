@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dawn: #0b0c10;
+  --color-ink: #12141a;
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-line-strong: rgb(255 255 255 / 0.18);
+  --color-text: #e8e6e1;
+  --color-muted: #8b8f99;
+  --color-amber: #f5a524;
+  --color-amber-soft: #ffb454;
+
+  --radius-card: 6px;
+  --radius-chip: 4px;
+
+  --font-sans: ui-sans-serif, "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Geist Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-dawn);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Resplandor solar muy sutil en el horizonte superior (sin morados). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 360px;
+  background: radial-gradient(60% 100% at 50% 0%, rgb(245 165 36 / 0.09), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::selection {
+  background: rgb(245 165 36 / 0.3);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+.glass {
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
