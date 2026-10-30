@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ClipboardCopy, ExternalLink, Lightbulb, Type, X } from "lucide-react";
+import { Check, ClipboardCopy, Download, ExternalLink, Lightbulb, Type, X } from "lucide-react";
 import { copyText } from "@/lib/clipboard";
-import { buildSkillMd } from "@/lib/skill-md";
+import { downloadTextFile } from "@/lib/download";
+import { buildSkillMd, skillFileName } from "@/lib/skill-md";
 import type { Reference } from "@/lib/types";
 import { ColorSwatches } from "./ColorSwatches";
+import { ReferenceCover } from "./ReferenceCover";
 
 interface ReferenceModalProps {
   reference: Reference;
@@ -55,6 +57,8 @@ export function ReferenceModal({ reference: r, onClose }: ReferenceModalProps) {
     setTimeout(() => setState("idle"), 2200);
   };
 
+  const download = () => downloadTextFile(skillFileName(r), buildSkillMd(r));
+
   return (
     <motion.div
       className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm"
@@ -84,6 +88,7 @@ export function ReferenceModal({ reference: r, onClose }: ReferenceModalProps) {
           <X className="size-4" strokeWidth={1.75} />
         </button>
 
+        <ReferenceCover reference={r} fixedAspect="aspect-[16/8]" className="mb-5 mt-6" />
         <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-amber">{r.category}</p>
         <h2 id="modal-title" className="mt-1 pr-10 text-2xl font-semibold tracking-tight">
           {r.title}
@@ -154,6 +159,13 @@ export function ReferenceModal({ reference: r, onClose }: ReferenceModalProps) {
               </>
             )}
           </motion.button>
+          <button
+            type="button"
+            onClick={download}
+            className="inline-flex items-center justify-center gap-1.5 rounded-[6px] border border-amber/40 px-4 py-3 text-sm font-medium text-amber transition-colors hover:bg-amber/10"
+          >
+            <Download className="size-4" strokeWidth={1.75} aria-hidden /> Descargar SKILL.md
+          </button>
           <a
             href={r.url}
             target="_blank"

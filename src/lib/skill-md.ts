@@ -50,3 +50,5 @@ ${r.takeaway}
 - Mezclar más de dos familias tipográficas o más de un color de acento.
 `;
 }
+
+export const skillFileName = (r: Reference) => `skill-${r.id}.md`;

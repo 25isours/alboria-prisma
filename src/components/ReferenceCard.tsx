@@ -4,9 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Reference } from "@/lib/types";
 import { ColorSwatches } from "./ColorSwatches";
-
-// Alturas distintas de la muestra de color para romper el ritmo del masonry.
-const SWATCH_HEIGHTS = [72, 48, 104, 60, 88];
+import { ReferenceCover } from "./ReferenceCover";
 
 interface ReferenceCardProps {
   reference: Reference;
@@ -23,9 +21,12 @@ export function ReferenceCard({ reference: r, index, onOpen }: ReferenceCardProp
       exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.15 } }}
       transition={{ type: "spring", stiffness: 380, damping: 32, delay: Math.min(index, 8) * 0.03 }}
       whileHover={{ y: -3 }}
-      className="glass mb-4 break-inside-avoid rounded-[6px] p-4 transition-colors hover:border-amber/40"
+      className="glass mb-4 break-inside-avoid rounded-[6px] p-3 transition-colors hover:border-amber/40"
     >
-      <ColorSwatches palette={r.palette} height={SWATCH_HEIGHTS[index % SWATCH_HEIGHTS.length]} />
+      <ReferenceCover reference={r} index={index} />
+      <div className="mt-2">
+        <ColorSwatches palette={r.palette} height={24} />
+      </div>
 
       <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-amber">
         {r.category}

@@ -13,8 +13,8 @@
   --radius-card: 6px;
   --radius-chip: 4px;
 
-  --font-sans: ui-sans-serif, "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, "Geist Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
 html {
