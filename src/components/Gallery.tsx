@@ -47,7 +47,13 @@ export function Gallery({ items, categories }: GalleryProps) {
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
             <AnimatePresence mode="popLayout">
               {visible.map((r, i) => (
-                <ReferenceCard key={r.id} reference={r} index={i} onOpen={setSelected} />
+                <ReferenceCard
+                  key={r.id}
+                  reference={r}
+                  index={i}
+                  archiveIndex={items.indexOf(r)}
+                  onOpen={setSelected}
+                />
               ))}
             </AnimatePresence>
           </div>

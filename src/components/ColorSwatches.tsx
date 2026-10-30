@@ -8,6 +8,8 @@ interface ColorSwatchesProps {
   palette: string[];
   height?: number;
   showLabels?: boolean;
+  /** Tira continua tipo muestra de película / Pantone con tooltip HEX al hover. */
+  strip?: boolean;
 }
 
 function isLight(hex: string) {
@@ -17,7 +19,7 @@ function isLight(hex: string) {
   return (r * 299 + g * 587 + b * 114) / 1000 > 150;
 }
 
-export function ColorSwatches({ palette, height = 56, showLabels = false }: ColorSwatchesProps) {
+export function ColorSwatches({ palette, height = 56, showLabels = false, strip = false }: ColorSwatchesProps) {
   const [copied, setCopied] = useState<string | null>(null);
 
   const copy = async (hex: string) => {
@@ -26,6 +28,30 @@ export function ColorSwatches({ palette, height = 56, showLabels = false }: Colo
       setTimeout(() => setCopied((c) => (c === hex ? null : c)), 1400);
     }
   };
+
+  if (strip) {
+    return (
+      <div className="flex border border-white/10" style={{ height }}>
+        {palette.map((hex) => (
+          <button
+            key={hex}
+            type="button"
+            onClick={() => copy(hex)}
+            aria-label={`Copiar color ${hex}`}
+            style={{ backgroundColor: hex }}
+            className="group relative h-full flex-1 outline-offset-1"
+          >
+            <span
+              role="tooltip"
+              className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-[4px] border border-white/15 bg-dawn px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-text opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+            >
+              {copied === hex ? "COPIADO ✓" : hex.toUpperCase()}
+            </span>
+          </button>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex overflow-hidden rounded-[4px] border border-white/10" style={{ height }}>

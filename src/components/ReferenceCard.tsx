@@ -8,11 +8,16 @@ import { ReferenceCover } from "./ReferenceCover";
 
 interface ReferenceCardProps {
   reference: Reference;
+  /** Posición en la galería visible (ritmo del masonry y retardo de entrada). */
   index: number;
+  /** Número de archivo estable (posición en el dataset completo, base 0). */
+  archiveIndex: number;
   onOpen: (r: Reference) => void;
 }
 
-export function ReferenceCard({ reference: r, index, onOpen }: ReferenceCardProps) {
+export function ReferenceCard({ reference: r, index, archiveIndex, onOpen }: ReferenceCardProps) {
+  const code = String(archiveIndex + 1).padStart(2, "0");
+
   return (
     <motion.article
       layout
@@ -21,25 +26,20 @@ export function ReferenceCard({ reference: r, index, onOpen }: ReferenceCardProp
       exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.15 } }}
       transition={{ type: "spring", stiffness: 380, damping: 32, delay: Math.min(index, 8) * 0.03 }}
       whileHover={{ y: -3 }}
-      className="glass mb-4 break-inside-avoid rounded-[6px] p-3 transition-colors hover:border-amber/40"
+      className="card-lit mb-4 break-inside-avoid rounded-[6px] p-3"
     >
-      <ReferenceCover reference={r} index={index} />
-      <div className="mt-2">
-        <ColorSwatches palette={r.palette} height={24} />
-      </div>
-
-      <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-amber">
-        {r.category}
+      <p className="mb-2.5 truncate font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
+        ARCHIVE // {code} · {r.category.toUpperCase()}
       </p>
-      <h2 className="mt-1 text-lg font-semibold tracking-tight">{r.title}</h2>
+
+      <ReferenceCover reference={r} index={index} />
+
+      <h2 className="mt-4 text-lg font-semibold tracking-tight">{r.title}</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">{r.summary}</p>
 
       <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Etiquetas">
         {r.tags.map((t) => (
-          <li
-            key={t}
-            className="rounded-[4px] border border-white/10 px-2 py-0.5 text-[11px] text-muted"
-          >
+          <li key={t} className="rounded-[4px] border border-white/10 px-2 py-0.5 text-[11px] text-muted">
             {t}
           </li>
         ))}
@@ -53,6 +53,10 @@ export function ReferenceCard({ reference: r, index, onOpen }: ReferenceCardProp
         Ver detalles
         <ArrowUpRight className="size-3.5" strokeWidth={2} aria-hidden />
       </button>
+
+      <div className="mt-4">
+        <ColorSwatches palette={r.palette} height={12} strip />
+      </div>
     </motion.article>
   );
 }

@@ -48,6 +48,45 @@ body::before {
   outline-offset: 2px;
 }
 
+/* Textura: rejilla de puntos de 1px cada 24px + ruido fino, para romper la frialdad del negro digital. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.03) 1px, transparent 0),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 24px 24px, 160px 160px;
+}
+
+/* Ficha de archivo: cristal con luz cenital (borde superior más luminoso, laterales tenues). */
+.card-lit {
+  background: rgb(255 255 255 / 0.025);
+  border: 1px solid rgb(255 255 255 / 0.05);
+  border-top-color: rgb(255 255 255 / 0.2);
+  box-shadow: 0 -1px 0 rgb(255 255 255 / 0.04) inset, 0 12px 24px -16px rgb(0 0 0 / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.25s;
+}
+.card-lit:hover {
+  border-color: rgb(255 255 255 / 0.09);
+  border-top-color: rgb(245 165 36 / 0.55);
+}
+
+/* Barra de comandos */
+.cmdbar {
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cmdbar:focus-within {
+  border-color: rgb(245 165 36 / 0.7);
+  box-shadow: 0 0 0 3px rgb(245 165 36 / 0.08);
+}
+
 .glass {
   background: rgb(255 255 255 / 0.03);
   border: 1px solid var(--color-line);

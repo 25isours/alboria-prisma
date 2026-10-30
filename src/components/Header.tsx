@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Sun, X } from "lucide-react";
 
@@ -56,6 +57,22 @@ export function Header({
   total,
   shown,
 }: HeaderProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [focused, setFocused] = useState(false);
+
+  // Atajo global ⌘K / Ctrl+K para saltar al buscador.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-dawn/80 backdrop-blur-md">
       <div className="mx-auto max-w-[1600px] px-4 py-4 sm:px-8">
@@ -77,15 +94,25 @@ export function Header({
             </div>
           </div>
 
-          <div className="glass flex w-full items-center gap-2 rounded-[6px] px-3 py-2 focus-within:border-amber/60 sm:w-[360px]">
+          <div className="cmdbar flex w-full items-center gap-2.5 rounded-[6px] px-3 py-2 sm:w-[400px]">
             <Search className="size-4 shrink-0 text-muted" strokeWidth={1.75} aria-hidden />
             <input
+              ref={inputRef}
               type="search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="Buscar por título, tag, fuente…"
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  if (query) onQueryChange("");
+                  else inputRef.current?.blur();
+                }
+              }}
+              placeholder="Buscar referencia, tag o fuente…"
               aria-label="Buscar referencias"
-              className="min-w-0 flex-1 bg-transparent text-sm text-text placeholder:text-muted focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+              aria-keyshortcuts="Control+K Meta+K"
+              className="min-w-0 flex-1 bg-transparent font-mono text-[13px] text-text placeholder:text-muted/70 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
               <button
@@ -97,6 +124,9 @@ export function Header({
                 <X className="size-4" strokeWidth={1.75} />
               </button>
             )}
+            <kbd className="hidden shrink-0 rounded-[4px] border border-white/15 px-1.5 py-0.5 font-mono text-[10px] text-muted sm:block">
+              {focused ? "ESC" : "⌘ K"}
+            </kbd>
           </div>
         </div>
 
